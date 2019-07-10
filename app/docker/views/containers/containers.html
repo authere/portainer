@@ -7,14 +7,20 @@
   <rd-header-content>Containers</rd-header-content>
 </rd-header>
 <information-panel-offline ng-if="offlineMode"></information-panel-offline>
-<div class="row">
+<div class="row" ng-repeat=" containers in containersList">
+
+  <rd-header>
+    <h4> 
+      <i class="fa fa-server" aria-hidden="true"></i> 
+      {{ containers && containers.endpoint && ( containers.endpoint.Name + ' (' + containers.endpoint.PublicURL + ')' ) }} 
+    </h4>
+  </rd-header>
+
   <div class="col-sm-12" ng-if="containers">
     <containers-datatable
       title-text="Containers" title-icon="fa-server"
       dataset="containers" table-key="containers"
       order-by="Status"
-      show-ownership-column="applicationState.application.authentication"
-      show-host-column="applicationState.endpoint.mode.agentProxy && applicationState.endpoint.mode.provider === 'DOCKER_SWARM_MODE'"
       show-add-action="true"
       offline-mode="offlineMode"
     ></containers-datatable>

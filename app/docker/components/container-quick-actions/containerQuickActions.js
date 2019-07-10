@@ -3,6 +3,7 @@ angular.module('portainer.docker').component('containerQuickActions', {
   bindings: {
     containerId: '<',
     nodeName: '<',
+    endpointId: '<',
     status: '<',
     state: '<',
     taskId: '<'

@@ -21,10 +21,12 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
 
   var update = function () {
     var nodeName = $transition$.params().nodeName;
+    var endpointId = $transition$.params().endpointId;
     HttpRequestHelper.setPortainerAgentTargetHeader(nodeName);
     $scope.nodeName = nodeName;
+    $scope.endpointId = endpointId;
 
-    ContainerService.container($transition$.params().id)
+    ContainerService.container($transition$.params().id, endpointId)
     .then(function success(data) {
       var container = data;
       $scope.container = container;
@@ -70,42 +72,42 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
   $scope.start = function () {
     var successMessage = 'Container successfully started';
     var errorMessage = 'Unable to start container';
-    executeContainerAction($transition$.params().id, ContainerService.startContainer, successMessage, errorMessage);
+    executeContainerAction($transition$.params().id, ContainerService.startContainer, successMessage, errorMessage, $scope.endpointId);
   };
 
   $scope.stop = function () {
     var successMessage = 'Container successfully stopped';
     var errorMessage = 'Unable to stop container';
-    executeContainerAction($transition$.params().id, ContainerService.stopContainer, successMessage, errorMessage);
+    executeContainerAction($transition$.params().id, ContainerService.stopContainer, successMessage, errorMessage, $scope.endpointId);
   };
 
   $scope.kill = function () {
     var successMessage = 'Container successfully killed';
     var errorMessage = 'Unable to kill container';
-    executeContainerAction($transition$.params().id, ContainerService.killContainer, successMessage, errorMessage);
+    executeContainerAction($transition$.params().id, ContainerService.killContainer, successMessage, errorMessage, $scope.endpointId);
   };
 
   $scope.pause = function() {
     var successMessage = 'Container successfully paused';
     var errorMessage = 'Unable to pause container';
-    executeContainerAction($transition$.params().id, ContainerService.pauseContainer, successMessage, errorMessage);
+    executeContainerAction($transition$.params().id, ContainerService.pauseContainer, successMessage, errorMessage, $scope.endpointId);
   };
 
   $scope.unpause = function() {
     var successMessage = 'Container successfully resumed';
     var errorMessage = 'Unable to resume container';
-    executeContainerAction($transition$.params().id, ContainerService.resumeContainer, successMessage, errorMessage);
+    executeContainerAction($transition$.params().id, ContainerService.resumeContainer, successMessage, errorMessage, $scope.endpointId);
   };
 
   $scope.restart = function () {
     var successMessage = 'Container successfully restarted';
     var errorMessage = 'Unable to restart container';
-    executeContainerAction($transition$.params().id, ContainerService.restartContainer, successMessage, errorMessage);
+    executeContainerAction($transition$.params().id, ContainerService.restartContainer, successMessage, errorMessage, $scope.endpointId);
   };
 
   $scope.renameContainer = function () {
     var container = $scope.container;
-    ContainerService.renameContainer($transition$.params().id, container.newContainerName)
+    ContainerService.renameContainer($transition$.params().id, container.newContainerName, $scope.endpointId)
     .then(function success() {
       container.Name = container.newContainerName;
       Notifications.success('Container successfully renamed', container.Name);
@@ -183,7 +185,7 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
   };
 
   function removeContainer(cleanAssociatedVolumes) {
-    ContainerService.remove($scope.container, cleanAssociatedVolumes)
+    ContainerService.remove($scope.container, cleanAssociatedVolumes, $scope.endpointId)
     .then(function success() {
       Notifications.success('Container successfully removed');
       $state.go('docker.containers', {}, {reload: true});
@@ -214,11 +216,11 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
       if (!isRunning) {
         return $q.when();
       }
-      return ContainerService.stopContainer(container.Id);
+      return ContainerService.stopContainer(container.Id, $scope.endpointId);
     }
 
     function renameContainer() {
-      return ContainerService.renameContainer(container.Id, container.Name + '-old');
+      return ContainerService.renameContainer(container.Id, container.Name + '-old', $scope.endpointId);
     }
 
     function pullImageIfNeeded() {
@@ -241,7 +243,7 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
         config.NetworkingConfig.EndpointsConfig = {};
         config.NetworkingConfig.EndpointsConfig[networksNames[0]] = networks[0];
       }
-      return $q.all([ContainerService.createContainer(config), networks]);
+      return $q.all([ContainerService.createContainer(config, $scope.endpointId), networks]);
     }
 
     function connectContainerToOtherNetworks(createContainerData) {
@@ -258,7 +260,7 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
     }
 
     function deleteOldContainer(newContainer) {
-      return ContainerService.remove(container, true).then(
+      return ContainerService.remove(container, true, $scope.endpointId).then(
         function onRemoveSuccess() {
           return newContainer;
         }
@@ -269,7 +271,7 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
       if (!isRunning) {
         return $q.when(newContainer);
       }
-      return ContainerService.startContainer(newContainer.Id).then(
+      return ContainerService.startContainer(newContainer.Id, $scope.endpointId).then(
         function onStartSuccess() {
           return newContainer;
         }
@@ -317,7 +319,7 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
     maximumRetryCount = restartPolicy === 'on-failure' ? maximumRetryCount : undefined;
 
     return ContainerService
-      .updateRestartPolicy($scope.container.Id, restartPolicy, maximumRetryCount)
+      .updateRestartPolicy($scope.container.Id, restartPolicy, maximumRetryCount, $scope.endpointId)
       .then(onUpdateSuccess)
       .catch(notifyOnError);
 

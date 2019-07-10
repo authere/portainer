@@ -3,7 +3,7 @@
     authorization="DockerContainerLogs"
     ng-if="$ctrl.state.showQuickActionLogs && $ctrl.taskId === undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.containers.container.logs({id: $ctrl.containerId, nodeName: $ctrl.nodeName})"
+    ui-sref="docker.containers.container.logs({id: $ctrl.containerId, nodeName: $ctrl.nodeName, endpointId: $ctrl.endpointId})"
     title="Logs">
     <i class="fa fa-file-alt space-right" aria-hidden="true"></i>
   </a>
@@ -11,7 +11,7 @@
     authorization="DockerTaskLogs"
     ng-if="$ctrl.state.showQuickActionLogs && $ctrl.taskId !== undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.tasks.task.logs({id: $ctrl.taskId})"
+    ui-sref="docker.tasks.task.logs({id: $ctrl.taskId, endpointId: $ctrl.endpointId})"
     title="Logs">
     <i class="fa fa-file-alt space-right" aria-hidden="true"></i>
   </a>
@@ -19,7 +19,7 @@
   authorization="DockerContainerInspect"
     ng-if="$ctrl.state.showQuickActionInspect && $ctrl.taskId === undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.containers.container.inspect({id: $ctrl.containerId, nodeName: $ctrl.nodeName})"
+    ui-sref="docker.containers.container.inspect({id: $ctrl.containerId, nodeName: $ctrl.nodeName, endpointId: $ctrl.endpointId})"
     title="Inspect">
     <i class="fa fa-info-circle space-right" aria-hidden="true"></i>
   </a>
@@ -27,7 +27,7 @@
     authorization="DockerTaskInspect"
     ng-if="$ctrl.state.showQuickActionInspect && $ctrl.taskId !== undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.tasks.task({id: $ctrl.taskId})"
+    ui-sref="docker.tasks.task({id: $ctrl.taskId, endpointId: $ctrl.endpointId})"
     title="Inspect">
     <i class="fa fa-info-circle space-right" aria-hidden="true"></i>
   </a>
@@ -35,7 +35,7 @@
     authorization="DockerContainerStats"
     ng-if="$ctrl.state.showQuickActionStats && ['starting', 'running', 'healthy', 'unhealthy'].indexOf($ctrl.status) !== -1 && $ctrl.taskId === undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.containers.container.stats({id: $ctrl.containerId, nodeName: $ctrl.nodeName})"
+    ui-sref="docker.containers.container.stats({id: $ctrl.containerId, nodeName: $ctrl.nodeName, endpointId: $ctrl.endpointId})"
     title="Stats">
     <i class="fa fa-chart-area space-right" aria-hidden="true"></i>
   </a>
@@ -43,7 +43,7 @@
     authorization="DockerExecStart"
     ng-if="$ctrl.state.showQuickActionExec && ['starting', 'running', 'healthy', 'unhealthy'].indexOf($ctrl.status) !== -1 && $ctrl.taskId === undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.containers.container.exec({id: $ctrl.containerId, nodeName: $ctrl.nodeName})"
+    ui-sref="docker.containers.container.exec({id: $ctrl.containerId, nodeName: $ctrl.nodeName, endpointId: $ctrl.endpointId})"
     title="Exec Console">
     <i class="fa fa-terminal space-right" aria-hidden="true"></i>
   </a>
@@ -51,7 +51,7 @@
     authorization="DockerContainerAttach"
     ng-if="$ctrl.state.showQuickActionAttach && ['starting', 'running', 'healthy', 'unhealthy'].indexOf($ctrl.status) !== -1 && $ctrl.taskId === undefined"
     style="margin: 0 2.5px;"
-    ui-sref="docker.containers.container.attach({id: $ctrl.containerId, nodeName: $ctrl.nodeName})"
+    ui-sref="docker.containers.container.attach({id: $ctrl.containerId, nodeName: $ctrl.nodeName, endpointId: $ctrl.endpointId})"
     title="Attach Console">
     <i class="fa fa-plug space-right" aria-hidden="true"></i>
   </a>

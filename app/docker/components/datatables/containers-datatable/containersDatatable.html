@@ -220,7 +220,7 @@
                   <input id="select_{{ $index }}" type="checkbox" ng-model="item.Checked" ng-click="$ctrl.selectItem(item, $event)"/>
                   <label for="select_{{ $index }}"></label>
                 </span>
-                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.containers.container({ id: item.Id, nodeName: item.NodeName })" title="{{ item | containername }}">{{ item | containername | truncate: $ctrl.settings.containerNameTruncateSize }}</a>
+                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.containers.container({ id: item.Id, nodeName: item.NodeName, endpointId: item.endpointId })" title="{{ item | containername }}">{{ item | containername | truncate: $ctrl.settings.containerNameTruncateSize }}</a>
                 <span ng-if="$ctrl.offlineMode">{{ item | containername | truncate: $ctrl.settings.containerNameTruncateSize }}</span>
               </td>
               <td ng-show="$ctrl.columnVisibility.columns.state.display">
@@ -228,13 +228,13 @@
                 <span ng-if="['starting','healthy','unhealthy'].indexOf(item.Status) === -1" class="label label-{{ item.Status|containerstatusbadge }}">{{ item.Status }}</span>
               </td>
               <td ng-if="!$ctrl.offlineMode && ($ctrl.settings.showQuickActionStats || $ctrl.settings.showQuickActionLogs || $ctrl.settings.showQuickActionExec || $ctrl.settings.showQuickActionAttach || $ctrl.settings.showQuickActionInspect)" ng-show="$ctrl.columnVisibility.columns.actions.display" authorization="DockerContainerStats, DockerContainerLogs, DockerExecStart, DockerContainerInspect, DockerTaskInspect, DockerTaskLogs">
-                <container-quick-actions container-id="item.Id" node-name="item.NodeName" status="item.Status" state="$ctrl.settings"></container-quick-actions>
+                <container-quick-actions container-id="item.Id" node-name="item.NodeName" endpoint-id="item.endpointId" status="item.Status" state="$ctrl.settings"></container-quick-actions>
               </td>
               <td ng-if="$ctrl.offlineMode">
               </td>
               <td ng-show="$ctrl.columnVisibility.columns.stack.display">{{ item.StackName ? item.StackName : '-' }}</td>
               <td ng-show="$ctrl.columnVisibility.columns.image.display">
-                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.images.image({ id: item.Image })">{{ item.Image | trimshasum }}</a>
+                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.images.image({ id: item.Image, endpointId: item.endpointId })">{{ item.Image | trimshasum }}</a>
                 <span ng-if="$ctrl.offlineMode">{{ item.Image | trimshasum }}</span>
               </td>
               <td ng-show="$ctrl.columnVisibility.columns.created.display">

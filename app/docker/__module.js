@@ -20,7 +20,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var configs = {
     name: 'docker.configs',
-    url: '/configs',
+    url: '/configs?endpointId',
     views: {
       'content@': {
         templateUrl: './views/configs/configs.html',
@@ -32,7 +32,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var config = {
     name: 'docker.configs.config',
-    url: '/:id',
+    url: '/:id?endpointId',
     views: {
       'content@': {
         templateUrl: './views/configs/edit/config.html',
@@ -43,7 +43,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var configCreation = {
     name: 'docker.configs.new',
-    url: '/new?id',
+    url: '/new?id&endpointId',
     views: {
       'content@': {
         templateUrl: './views/configs/create/createconfig.html',
@@ -55,7 +55,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var containers = {
     name: 'docker.containers',
-    url: '/containers',
+    url: '/containers?endpointId',
     views: {
       'content@': {
         templateUrl: './views/containers/containers.html',
@@ -99,7 +99,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var containerCreation = {
     name: 'docker.containers.new',
-    url: '/new?nodeName&from',
+    url: '/new?nodeName&from&endpointId',
     views: {
       'content@': {
         templateUrl: './views/containers/create/createcontainer.html',
@@ -143,7 +143,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var dashboard = {
     name: 'docker.dashboard',
-    url: '/dashboard',
+    url: '/dashboard?endpointId',
     views: {
       'content@': {
         templateUrl: './views/dashboard/dashboard.html',
@@ -154,7 +154,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var host = {
     name: 'docker.host',
-    url: '/host',
+    url: '/host?endpointId',
     views: {
       'content@': {
         component: 'hostView'
@@ -164,7 +164,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var hostBrowser = {
     name: 'docker.host.browser',
-    url: '/browser',
+    url: '/browser?endpointId',
     views: {
       'content@': {
         component: 'hostBrowserView'
@@ -174,7 +174,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var hostJob = {
     name: 'docker.host.job',
-    url: '/job',
+    url: '/job?endpointId',
     views: {
       'content@': {
         component: 'hostJobView'
@@ -184,7 +184,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var events = {
     name: 'docker.events',
-    url: '/events',
+    url: '/events?endpointId',
     views: {
       'content@': {
         templateUrl: './views/events/events.html',
@@ -195,7 +195,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var images = {
     name: 'docker.images',
-    url: '/images',
+    url: '/images?endpointId',
     views: {
       'content@': {
         templateUrl: './views/images/images.html',
@@ -206,7 +206,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var image = {
     name: 'docker.images.image',
-    url: '/:id?nodeName',
+    url: '/:id?nodeName?endpointId',
     views: {
       'content@': {
         templateUrl: './views/images/edit/image.html',
@@ -217,7 +217,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var imageBuild = {
     name: 'docker.images.build',
-    url: '/build',
+    url: '/build?endpointId',
     views: {
       'content@': {
         templateUrl: './views/images/build/buildimage.html',
@@ -228,7 +228,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var imageImport = {
     name: 'docker.images.import',
-    url: '/import',
+    url: '/import?endpointId',
     views: {
       'content@': {
         templateUrl: './views/images/import/importimage.html',
@@ -239,7 +239,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var networks = {
     name: 'docker.networks',
-    url: '/networks',
+    url: '/networks?endpointId',
     views: {
       'content@': {
         templateUrl: './views/networks/networks.html',
@@ -250,7 +250,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var network = {
     name: 'docker.networks.network',
-    url: '/:id?nodeName',
+    url: '/:id?nodeName&endpointId',
     views: {
       'content@': {
         templateUrl: './views/networks/edit/network.html',
@@ -261,7 +261,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var networkCreation = {
     name: 'docker.networks.new',
-    url: '/new',
+    url: '/new?endpointId',
     views: {
       'content@': {
         templateUrl: './views/networks/create/createnetwork.html',
@@ -272,13 +272,13 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var nodes = {
     name: 'docker.nodes',
-    url: '/nodes',
+    url: '/nodes?endpointId',
     abstract: true
   };
 
   var node = {
     name: 'docker.nodes.node',
-    url: '/:id',
+    url: '/:id?endpointId',
     views: {
       'content@': {
         component: 'nodeDetailsView'
@@ -288,7 +288,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var nodeBrowser = {
     name: 'docker.nodes.node.browse',
-    url: '/browse',
+    url: '/browse?endpointId',
     views: {
       'content@': {
         component: 'nodeBrowserView'
@@ -298,7 +298,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var nodeJob = {
     name: 'docker.nodes.node.job',
-    url: '/job',
+    url: '/job?endpointId',
     views: {
       'content@': {
         component: 'nodeJobView'
@@ -308,7 +308,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var secrets = {
     name: 'docker.secrets',
-    url: '/secrets',
+    url: '/secrets?endpointId',
     views: {
       'content@': {
         templateUrl: './views/secrets/secrets.html',
@@ -319,7 +319,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var secret = {
     name: 'docker.secrets.secret',
-    url: '/:id',
+    url: '/:id?endpointId',
     views: {
       'content@': {
         templateUrl: './views/secrets/edit/secret.html',
@@ -330,7 +330,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var secretCreation = {
     name: 'docker.secrets.new',
-    url: '/new',
+    url: '/new?endpointId',
     views: {
       'content@': {
         templateUrl: './views/secrets/create/createsecret.html',
@@ -341,7 +341,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var services = {
     name: 'docker.services',
-    url: '/services',
+    url: '/services?endpointId',
     views: {
       'content@': {
         templateUrl: './views/services/services.html',
@@ -352,7 +352,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var service = {
     name: 'docker.services.service',
-    url: '/:id',
+    url: '/:id?endpointId',
     views: {
       'content@': {
         templateUrl: './views/services/edit/service.html',
@@ -363,7 +363,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var serviceCreation = {
     name: 'docker.services.new',
-    url: '/new',
+    url: '/new?endpointId',
     views: {
       'content@': {
         templateUrl: './views/services/create/createservice.html',
@@ -374,7 +374,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var serviceLogs = {
     name: 'docker.services.service.logs',
-    url: '/logs',
+    url: '/logs?endpointId',
     views: {
       'content@': {
         templateUrl: './views/services/logs/servicelogs.html',
@@ -385,7 +385,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var swarm = {
     name: 'docker.swarm',
-    url: '/swarm',
+    url: '/swarm?endpointId',
     views: {
       'content@': {
         templateUrl: './views/swarm/swarm.html',
@@ -396,7 +396,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var swarmVisualizer = {
     name: 'docker.swarm.visualizer',
-    url: '/visualizer',
+    url: '/visualizer?endpointId',
     views: {
       'content@': {
         templateUrl: './views/swarm/visualizer/swarmvisualizer.html',
@@ -407,13 +407,13 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var tasks = {
     name: 'docker.tasks',
-    url: '/tasks',
+    url: '/tasks?endpointId',
     abstract: true
   };
 
   var task = {
     name: 'docker.tasks.task',
-    url: '/:id',
+    url: '/:id?endpointId',
     views: {
       'content@': {
         templateUrl: './views/tasks/edit/task.html',
@@ -424,7 +424,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var taskLogs = {
     name: 'docker.tasks.task.logs',
-    url: '/logs',
+    url: '/logs?endpointId',
     views: {
       'content@': {
         templateUrl: './views/tasks/logs/tasklogs.html',
@@ -435,7 +435,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var volumes = {
     name: 'docker.volumes',
-    url: '/volumes',
+    url: '/volumes?endpointId',
     views: {
       'content@': {
         templateUrl: './views/volumes/volumes.html',
@@ -446,7 +446,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var volume = {
     name: 'docker.volumes.volume',
-    url: '/:id?nodeName',
+    url: '/:id?nodeName&endpointId',
     views: {
       'content@': {
         templateUrl: './views/volumes/edit/volume.html',
@@ -457,7 +457,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var volumeBrowse = {
     name: 'docker.volumes.volume.browse',
-    url: '/browse',
+    url: '/browse?endpointId',
     views: {
       'content@': {
         templateUrl: './views/volumes/browse/browsevolume.html',
@@ -468,7 +468,7 @@ angular.module('portainer.docker', ['portainer.app'])
 
   var volumeCreation = {
     name: 'docker.volumes.new',
-    url: '/new',
+    url: '/new?endpointId',
     views: {
       'content@': {
         templateUrl: './views/volumes/create/createvolume.html',

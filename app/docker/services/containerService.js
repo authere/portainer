@@ -1,15 +1,15 @@
 import { ContainerDetailsViewModel, ContainerViewModel, ContainerStatsViewModel } from '../models/container';
 
 angular.module('portainer.docker')
-.factory('ContainerService', ['$q', 'Container', 'ResourceControlService', 'LogHelper', '$timeout',
-function ContainerServiceFactory($q, Container, ResourceControlService, LogHelper, $timeout) {
+.factory('ContainerService', ['$q', 'Container', 'EndpointProvider', 'ResourceControlService', 'LogHelper', '$timeout',
+function ContainerServiceFactory($q, Container, EndpointProvider, ResourceControlService, LogHelper, $timeout) {
   'use strict';
   var service = {};
 
-  service.container = function(id) {
+  service.container = function(id, endpointId) {
     var deferred = $q.defer();
 
-    Container.get({ id: id }).$promise
+    Container.get({ id: id, endpointId: endpointId }).$promise
     .then(function success(data) {
       var container = new ContainerDetailsViewModel(data);
       deferred.resolve(container);
@@ -21,9 +21,10 @@ function ContainerServiceFactory($q, Container, ResourceControlService, LogHelpe
     return deferred.promise;
   };
 
-  service.containers = function(all, filters) {
+  service.containers = function(all, filters, endpointId) {
+
     var deferred = $q.defer();
-    Container.query({ all : all, filters: filters }).$promise
+    Container.query({all : all, filters: filters, endpointId: endpointId }).$promise
     .then(function success(data) {
       var containers = data.map(function (item) {
         return new ContainerViewModel(item);
@@ -37,11 +38,11 @@ function ContainerServiceFactory($q, Container, ResourceControlService, LogHelpe
     return deferred.promise;
   };
 
-  service.resizeTTY = function (id, width, height, timeout) {
+  service.resizeTTY = function (id, width, height, timeout, endpointId) {
     var deferred = $q.defer();
 
     $timeout(function() {
-      Container.resize({}, {id: id, height: height, width: width}).$promise
+      Container.resize({}, {id: id, height: height, width: width, endpointId}).$promise
           .then(function success(data) {
             if (data.message) {
               deferred.reject({msg: 'Unable to resize tty of container ' + id, err: data.message});
@@ -57,38 +58,38 @@ function ContainerServiceFactory($q, Container, ResourceControlService, LogHelpe
     return deferred.promise;
   };
 
-  service.startContainer = function(id) {
-    return Container.start({ id: id }, {}).$promise;
+  service.startContainer = function(id, endpointId) {
+    return Container.start({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
-  service.stopContainer = function(id) {
-    return Container.stop({ id: id }, {}).$promise;
+  service.stopContainer = function(id, endpointId) {
+    return Container.stop({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
-  service.restartContainer = function(id) {
-    return Container.restart({ id: id }, {}).$promise;
+  service.restartContainer = function(id, endpointId) {
+    return Container.restart({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
-  service.killContainer = function(id) {
-    return Container.kill({ id: id }, {}).$promise;
+  service.killContainer = function(id, endpointId) {
+    return Container.kill({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
-  service.pauseContainer = function(id) {
-    return Container.pause({ id: id }, {}).$promise;
+  service.pauseContainer = function(id, endpointId) {
+    return Container.pause({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
-  service.resumeContainer = function(id) {
-    return Container.unpause({ id: id }, {}).$promise;
+  service.resumeContainer = function(id, endpointId) {
+    return Container.unpause({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
-  service.renameContainer = function(id, newContainerName) {
-    return Container.rename({id: id, name: newContainerName }, {}).$promise;
+  service.renameContainer = function(id, newContainerName, endpointId) {
+    return Container.rename({id: id, name: newContainerName, endpointId: endpointId }, {}).$promise;
   };
 
   service.updateRestartPolicy = updateRestartPolicy;
 
-  function updateRestartPolicy(id, restartPolicy, maximumRetryCounts) {
-    return Container.update({ id: id },
+  function updateRestartPolicy(id, restartPolicy, maximumRetryCounts, endpointId) {
+    return Container.update({ id: id, endpointId: endpointId },
       { RestartPolicy: { Name: restartPolicy, MaximumRetryCount: maximumRetryCounts } }
     ).$promise;
   }
@@ -122,10 +123,10 @@ function ContainerServiceFactory($q, Container, ResourceControlService, LogHelpe
     return deferred.promise;
   };
 
-  service.remove = function(container, removeVolumes) {
+  service.remove = function(container, removeVolumes, endpointId) {
     var deferred = $q.defer();
 
-    Container.remove({ id: container.Id, v: (removeVolumes) ? 1 : 0, force: true }).$promise
+    Container.remove({ id: container.Id, v: (removeVolumes) ? 1 : 0, force: true , endpointId: endpointId}).$promise
     .then(function success(data) {
       if (data.message) {
         deferred.reject({ msg: data.message, err: data.message });
@@ -186,10 +187,10 @@ function ContainerServiceFactory($q, Container, ResourceControlService, LogHelpe
     return deferred.promise;
   };
 
-  service.containerStats = function(id) {
+  service.containerStats = function(id, endpointId) {
     var deferred = $q.defer();
 
-    Container.stats({ id: id }).$promise
+    Container.stats({ id: id, endpointId: endpointId }).$promise
     .then(function success(data) {
       var containerStats = new ContainerStatsViewModel(data);
       deferred.resolve(containerStats);
@@ -201,16 +202,16 @@ function ContainerServiceFactory($q, Container, ResourceControlService, LogHelpe
     return deferred.promise;
   };
 
-  service.containerTop = function(id) {
-    return Container.top({ id: id }).$promise;
+  service.containerTop = function(id, endpointId) {
+    return Container.top({ id: id, endpointId: endpointId }).$promise;
   };
 
-  service.inspect = function(id) {
-    return Container.inspect({ id: id }).$promise;
+  service.inspect = function(id, endpointId) {
+    return Container.inspect({ id: id, endpointId: endpointId }).$promise;
   };
 
-  service.prune = function(filters) {
-    return Container.prune({ filters: filters }).$promise;
+  service.prune = function(filters, endpointId) {
+    return Container.prune({ filters: filters, endpointId: endpointId }).$promise;
   };
 
   return service;

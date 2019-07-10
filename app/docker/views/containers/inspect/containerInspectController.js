@@ -9,7 +9,7 @@ function ($scope, $transition$, Notifications, ContainerService, HttpRequestHelp
 
   function initView() {
     HttpRequestHelper.setPortainerAgentTargetHeader($transition$.params().nodeName);
-    ContainerService.inspect($transition$.params().id)
+    ContainerService.inspect($transition$.params().id, $transition$.params().endpointId)
     .then(function success(d) {
       $scope.containerInfo = d;
     })
