@@ -9,10 +9,10 @@ function StackServiceFactory($q, Stack, ResourceControlService, FileUploadServic
   var service = {};
 
 
-  service.stack = function(id) {
+  service.stack = function(id, endpointId) {
     var deferred = $q.defer();
 
-    Stack.get({ id: id }).$promise
+    Stack.get({ id: id, endpointId: endpointId }).$promise
     .then(function success(data) {
       var stack = new StackViewModel(data);
       deferred.resolve(stack);
@@ -130,10 +130,10 @@ function StackServiceFactory($q, Stack, ResourceControlService, FileUploadServic
     return deferred.promise;
   };
 
-  service.externalComposeStacks = function() {
+  service.externalComposeStacks = function(filters) {
     var deferred = $q.defer();
 
-    ContainerService.containers(1)
+    ContainerService.containers(1, null, filters && filters.EndpointID)
     .then(function success(data) {
       var containers = data;
       var stackNames = StackHelper.getExternalStackNamesFromContainers(containers);
@@ -155,7 +155,7 @@ function StackServiceFactory($q, Stack, ResourceControlService, FileUploadServic
 
     $q.all({
       stacks: Stack.query({filters: filters}).$promise,
-      externalStacks: includeExternalStacks ? service.externalComposeStacks() : []
+      externalStacks: includeExternalStacks ? service.externalComposeStacks(filters) : []
     })
     .then(function success(data) {
       var stacks = data.stacks.map(function (item) {

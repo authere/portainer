@@ -26,12 +26,12 @@ angular.module('portainer.docker')
     return deferred.promise;
   };
 
-  service.images = function(withUsage) {
+  service.images = function(withUsage, endpointId) {
     var deferred = $q.defer();
 
     $q.all({
-      containers: withUsage ? ContainerService.containers(1) : [],
-      images: Image.query({}).$promise
+      containers: withUsage ? ContainerService.containers(1, null, endpointId) : [],
+      images: Image.query({endpointId: endpointId}).$promise
     })
     .then(function success(data) {
       var containers = data.containers;

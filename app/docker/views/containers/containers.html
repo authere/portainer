@@ -7,16 +7,16 @@
   <rd-header-content>Containers</rd-header-content>
 </rd-header>
 <information-panel-offline ng-if="offlineMode"></information-panel-offline>
-<div class="row" ng-repeat=" containers in containersList">
+<div class="col" ng-repeat=" containers in containersList">
 
+  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
   <rd-header>
     <h4> 
       <i class="fa fa-server" aria-hidden="true"></i> 
       {{ containers && containers.endpoint && ( containers.endpoint.Name + ' (' + containers.endpoint.PublicURL + ')' ) }} 
     </h4>
   </rd-header>
-
-  <div class="col-sm-12" ng-if="containers">
+  <div ng-if="containers">
     <containers-datatable
       title-text="Containers" title-icon="fa-server"
       dataset="containers" table-key="containers"
@@ -24,5 +24,6 @@
       show-add-action="true"
       offline-mode="offlineMode"
     ></containers-datatable>
+  </div>
   </div>
 </div>

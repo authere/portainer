@@ -5,9 +5,9 @@ angular.module('portainer.docker')
   'use strict';
   var service = {};
 
-  service.plugins = function() {
+  service.plugins = function(endpointId) {
     var deferred = $q.defer();
-    System.info({}).$promise
+    System.info({endpointId: endpointId}).$promise
     .then(function success(data) {
       var plugins = data.Plugins;
       deferred.resolve(plugins);
@@ -18,22 +18,22 @@ angular.module('portainer.docker')
     return deferred.promise;
   };
 
-  service.info = function() {
-    return System.info({}).$promise;
+  service.info = function(endpointId) {
+    return System.info({endpointId: endpointId}).$promise;
   };
 
   service.ping = function(endpointId) {
     return SystemEndpoint.ping({endpointId: endpointId}).$promise;
   };
 
-  service.version = function() {
-    return System.version({}).$promise;
+  service.version = function(endpointId) {
+    return System.version({endpointId: endpointId}).$promise;
   };
 
-  service.events = function(from, to) {
+  service.events = function(from, to, endpointId) {
     var deferred = $q.defer();
 
-    System.events({since: from, until: to}).$promise
+    System.events({since: from, until: to, endpointId: endpointId}).$promise
     .then(function success(data) {
       var events = data.map(function (item) {
         return new EventViewModel(item);
@@ -47,8 +47,8 @@ angular.module('portainer.docker')
     return deferred.promise;
   };
 
-  service.dataUsage = function () {
-    return System.dataUsage().$promise;
+  service.dataUsage = function (endpointId) {
+    return System.dataUsage({endpointId: endpointId}).$promise;
   };
 
   return service;

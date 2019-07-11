@@ -13,13 +13,13 @@ function ($scope, $q, ContainerService, ImageService, NetworkService, VolumeServ
     var endpointId = EndpointProvider.endpointID();
 
     $q.all({
-      containers: ContainerService.containers(1),
+      containers: ContainerService.containers(1, null, endpointId),
       images: ImageService.images(false),
       volumes: VolumeService.volumes(),
       networks: NetworkService.networks(true, true, true),
       services: endpointMode.provider === 'DOCKER_SWARM_MODE' && endpointMode.role === 'MANAGER' ? ServiceService.services() : [],
       stacks: StackService.stacks(true, endpointMode.provider === 'DOCKER_SWARM_MODE' && endpointMode.role === 'MANAGER', endpointId),
-      info: SystemService.info(),
+      info: SystemService.info(endpointId),
       endpoint: EndpointService.endpoint(endpointId)
     })
     .then(function success(data) {

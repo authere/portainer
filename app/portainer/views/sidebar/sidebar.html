@@ -12,6 +12,12 @@
     <li class="sidebar-list">
       <a ui-sref="portainer.home" ui-sref-active="active">Home <span class="menu-icon fa fa-home fa-fw"></span></a>
     </li>
+    <li class="sidebar-list">
+    <a ui-sref="docker.containers" ui-sref-active="active">Containers <span class="menu-icon fa fa-server fa-fw"></span></a>
+    </li>
+    <li class="sidebar-list">
+    <a ui-sref="docker.host" ui-sref-active="active">Host <span class="menu-icon fa fa-th fa-fw"></span></a>
+    </li>
     <li class="sidebar-title endpoint-name" ng-if="applicationState.endpoint.name">
       <span class="fa fa-plug space-right"></span>{{ applicationState.endpoint.name }}
     </li>

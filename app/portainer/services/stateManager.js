@@ -163,8 +163,8 @@ function StateManagerFactory($q, SystemService, InfoHelper, LocalStorage, Settin
     }
 
     $q.all({
-      version: endpoint.Status === 1 ? SystemService.version() : $q.when(endpoint.Snapshots[0].SnapshotRaw.Version),
-      info: endpoint.Status === 1 ? SystemService.info() : $q.when(endpoint.Snapshots[0].SnapshotRaw.Info)
+      version: endpoint.Status === 1 ? SystemService.version(endpoint.Id) : $q.when(endpoint.Snapshots[0].SnapshotRaw.Version),
+      info: endpoint.Status === 1 ? SystemService.info(endpoint.Id) : $q.when(endpoint.Snapshots[0].SnapshotRaw.Info)
     })
     .then(function success(data) {
       var endpointMode = InfoHelper.determineEndpointMode(data.info, endpoint.Type);

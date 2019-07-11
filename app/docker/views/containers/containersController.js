@@ -17,7 +17,6 @@ function ($scope, ContainerService, Notifications, EndpointProvider) {
         _.each(data, (v) => {
           v.endpointId = ep.Id;
         });
-        console.log(data);
         $scope.containersList[k] = data;
         $scope.offlineMode = EndpointProvider.offlineMode();
       })

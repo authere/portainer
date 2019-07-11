@@ -15,12 +15,12 @@ function ExtensionManagerFactory($q, PluginService, SystemService, NodeService, 
       return deferred.promise;
     }
 
-    SystemService.version()
+    SystemService.version(endpoint.Id)
     .then(function success(data) {
       var endpointAPIVersion = parseFloat(data.ApiVersion);
 
       return $q.all([
-        endpointAPIVersion >= 1.25 ? initStoridgeExtension(): {}
+        endpointAPIVersion >= 1.25 ? initStoridgeExtension(endpoint): {}
       ]);
     })
     .then(function success(data) {
@@ -34,10 +34,10 @@ function ExtensionManagerFactory($q, PluginService, SystemService, NodeService, 
     return deferred.promise;
   };
 
-  function initStoridgeExtension() {
+  function initStoridgeExtension(endpoint) {
     var deferred = $q.defer();
 
-    PluginService.volumePlugins()
+    PluginService.volumePlugins(null, endpoint.Id)
     .then(function success(data) {
       var volumePlugins = data;
       if (_.includes(volumePlugins, 'cio:latest')) {

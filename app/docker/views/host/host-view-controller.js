@@ -1,3 +1,4 @@
+import _ from 'lodash-es';
 angular.module('portainer.docker').controller('HostViewController', [
   '$q', 'SystemService', 'Notifications', 'StateManager', 'AgentService', 'ContainerService', 'Authentication', 'EndpointProvider',
   function HostViewController($q, SystemService, Notifications, StateManager, AgentService, ContainerService, Authentication, EndpointProvider) {
@@ -24,16 +25,20 @@ angular.module('portainer.docker').controller('HostViewController', [
       ctrl.state.agentApiVersion = agentApiVersion;
       ctrl.state.enableHostManagementFeatures = applicationState.application.enableHostManagementFeatures;
 
-      $q.all({
-        version: SystemService.version(),
-        info: SystemService.info(),
-        jobs: ctrl.state.isAdmin ? ContainerService.containers(true, { label: ['io.portainer.job.endpoint'] }) : []
-      })
+      var endpoints = EndpointProvider.endpoints();
+      var jobQ = [];
+
+      _.each(endpoints, (ep)=> {
+        jobQ.push(SystemService.info(ep.Id));
+      });
+      
+      $q.all(jobQ)
       .then(function success(data) {
-        ctrl.engineDetails = buildEngineDetails(data);
-        ctrl.hostDetails = buildHostDetails(data.info);
+        // ctrl.engineDetails = buildEngineDetails(data);
+        ctrl.hostDetails = data.map(buildHostDetails);
+        console.log(JSON.stringify(ctrl.hostDetails));
         ctrl.state.offlineMode = EndpointProvider.offlineMode();
-        ctrl.jobs = data.jobs;
+        // ctrl.jobs = data.jobs;
 
         if (ctrl.state.isAgent && agentApiVersion > 1) {
           return AgentService.hostInfo(data.info.Hostname).then(function onHostInfoLoad(agentHostInfo) {

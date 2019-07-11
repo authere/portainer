@@ -118,14 +118,24 @@ function ($scope, $state, ImageService, Notifications, ModalService, HttpRequest
   $scope.offlineMode = false;
 
   function initView() {
-    ImageService.images(true)
-    .then(function success(data) {
-      $scope.images = data;
-      $scope.offlineMode = EndpointProvider.offlineMode();
-    })
-    .catch(function error(err) {
-      Notifications.error('Failure', err, 'Unable to retrieve images');
-      $scope.images = [];
+    var endpoints = EndpointProvider.endpoints();
+    $scope.endpoints = endpoints;
+    $scope.imagesList = [];
+
+    _.each(endpoints, (ep, k)=> {
+      ImageService.images(true, ep.Id)
+      .then(function success(data) {
+        data.endpoint = ep;
+        _.each(data, (v) => {
+          v.endpointId = ep.Id;
+        });
+        $scope.imagesList[k] = data;
+        $scope.offlineMode = EndpointProvider.offlineMode();
+      })
+      .catch(function error(err) {
+        Notifications.error('Failure', err, 'Unable to retrieve images');
+        $scope.imagesList[k] = [];
+      });
     });
   }
 

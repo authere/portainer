@@ -24,11 +24,11 @@ angular.module('portainer.docker')
     return deferred.promise;
   };
 
-  function servicePlugins(systemOnly, pluginType, pluginVersion) {
+  function servicePlugins(systemOnly, pluginType, pluginVersion, endpointId) {
     var deferred = $q.defer();
 
     $q.all({
-      system: SystemService.plugins(),
+      system: SystemService.plugins(endpointId),
       plugins: systemOnly ? [] : service.plugins()
     })
     .then(function success(data) {
@@ -56,8 +56,8 @@ angular.module('portainer.docker')
     return deferred.promise;
   }
 
-  service.volumePlugins = function(systemOnly) {
-    return servicePlugins(systemOnly, 'Volume', 'docker.volumedriver/1.0');
+  service.volumePlugins = function(systemOnly, endpointId) {
+    return servicePlugins(systemOnly, 'Volume', 'docker.volumedriver/1.0', endpointId);
   };
 
   service.networkPlugins = function(systemOnly) {

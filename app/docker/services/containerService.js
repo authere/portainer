@@ -22,7 +22,6 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.containers = function(all, filters, endpointId) {
-
     var deferred = $q.defer();
     Container.query({all : all, filters: filters, endpointId: endpointId }).$promise
     .then(function success(data) {
