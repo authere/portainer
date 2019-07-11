@@ -4,12 +4,13 @@ import { ImageDetailsViewModel } from "../models/imageDetails";
 import { ImageLayerViewModel } from "../models/imageLayer";
 
 angular.module('portainer.docker')
-.factory('ImageService', ['$q', 'Image', 'ImageHelper', 'RegistryService', 'HttpRequestHelper', 'ContainerService', 'FileUploadService',
-  function ImageServiceFactory($q, Image, ImageHelper, RegistryService, HttpRequestHelper, ContainerService, FileUploadService) {
+.factory('ImageService', ['$q', 'Image', 'ImageHelper','EndpointProvider', 'RegistryService', 'HttpRequestHelper', 'ContainerService', 'FileUploadService',
+  function ImageServiceFactory($q, Image, ImageHelper, EndpointProvider, RegistryService, HttpRequestHelper, ContainerService, FileUploadService) {
   'use strict';
   var service = {};
 
-  service.image = function(imageId) {
+  service.image = function(imageId, endpointId) {
+    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
     var deferred = $q.defer();
     Image.get({id: imageId}).$promise
     .then(function success(data) {
@@ -27,6 +28,7 @@ angular.module('portainer.docker')
   };
 
   service.images = function(withUsage, endpointId) {
+    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
     var deferred = $q.defer();
 
     //console.log((new Error()).stack);
@@ -56,7 +58,8 @@ angular.module('portainer.docker')
     return deferred.promise;
   };
 
-  service.history = function(imageId) {
+  service.history = function(imageId, endpointId) {
+    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
     var deferred = $q.defer();
     Image.history({id: imageId}).$promise
     .then(function success(data) {
