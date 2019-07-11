@@ -29,6 +29,7 @@ angular.module('portainer.docker')
   service.images = function(withUsage, endpointId) {
     var deferred = $q.defer();
 
+    console.log((new Error()).stack);
     $q.all({
       containers: withUsage ? ContainerService.containers(1, null, endpointId) : [],
       images: Image.query({endpointId: endpointId}).$promise

@@ -34,9 +34,8 @@ angular.module('portainer.docker').controller('HostViewController', [
       
       $q.all(jobQ)
       .then(function success(data) {
-        // ctrl.engineDetails = buildEngineDetails(data);
+        //ctrl.engineDetails = buildEngineDetails(data);
         ctrl.hostDetails = data.map(buildHostDetails);
-        console.log(JSON.stringify(ctrl.hostDetails));
         ctrl.state.offlineMode = EndpointProvider.offlineMode();
         // ctrl.jobs = data.jobs;
 
@@ -55,7 +54,7 @@ angular.module('portainer.docker').controller('HostViewController', [
         );
       });
     }
-
+/*
     function buildEngineDetails(data) {
       var versionDetails = data.version;
       var info = data.info;
@@ -69,6 +68,7 @@ angular.module('portainer.docker').controller('HostViewController', [
         networkPlugins: info.Plugins.Network
       };
     }
+    */
 
     function buildHostDetails(info) {
       return {
