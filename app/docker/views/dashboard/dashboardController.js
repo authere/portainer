@@ -14,7 +14,7 @@ function ($scope, $q, ContainerService, ImageService, NetworkService, VolumeServ
 
     $q.all({
       containers: ContainerService.containers(1, null, endpointId),
-      images: ImageService.images(false),
+      images: ImageService.images(false, endpointId),
       volumes: VolumeService.volumes(),
       networks: NetworkService.networks(true, true, true),
       services: endpointMode.provider === 'DOCKER_SWARM_MODE' && endpointMode.role === 'MANAGER' ? ServiceService.services() : [],
