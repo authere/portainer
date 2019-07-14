@@ -5,3 +5,6 @@ portainer-checksum.txt
 api/cmd/portainer/portainer*
 .tmp
 .vscode
+cscope.in.out
+cscope.out
+cscope.po.out

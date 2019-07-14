@@ -10,7 +10,7 @@ angular.module('portainer.docker')
   var service = {};
 
   service.image = function(imageId, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
     Image.get({id: imageId}).$promise
     .then(function success(data) {
@@ -28,7 +28,7 @@ angular.module('portainer.docker')
   };
 
   service.images = function(withUsage, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     //console.log((new Error()).stack);
@@ -59,7 +59,7 @@ angular.module('portainer.docker')
   };
 
   service.history = function(imageId, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
     Image.history({id: imageId}).$promise
     .then(function success(data) {

@@ -19,11 +19,11 @@ angular.module('portainer.docker').controller('HostViewController', [
 
     function initView() {
       var applicationState = StateManager.getState();
-      ctrl.state.isAgent = applicationState.endpoint.mode.agentProxy;
+      ctrl.state.isAgent = _.get(applicationState, 'endpoint.mode.agentProxy');
       ctrl.state.isAdmin = Authentication.isAdmin();
-      var agentApiVersion = applicationState.endpoint.agentApiVersion;
+      var agentApiVersion = _.get(applicationState, 'applicationState.endpoint.agentApiVersion');
       ctrl.state.agentApiVersion = agentApiVersion;
-      ctrl.state.enableHostManagementFeatures = applicationState.application.enableHostManagementFeatures;
+      ctrl.state.enableHostManagementFeatures = _.get(applicationState, 'application.enableHostManagementFeatures');
 
       var endpoints = EndpointProvider.endpoints();
       var jobQ = [];

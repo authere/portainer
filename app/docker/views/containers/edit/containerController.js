@@ -58,8 +58,8 @@ function ($q, $scope, $state, $transition$, $filter, Commit, ContainerHelper, Co
     });
   };
 
-  function executeContainerAction(id, action, successMessage, errorMessage) {
-    action(id)
+  function executeContainerAction(id, action, successMessage, errorMessage, endpointId) {
+    action(id, endpointId)
     .then(function success() {
       Notifications.success(successMessage, id);
       update();

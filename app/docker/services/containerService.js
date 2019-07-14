@@ -7,7 +7,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   var service = {};
 
   service.container = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     Container.get({ id: id, endpointId: endpointId }).$promise
@@ -23,7 +23,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.containers = function(all, filters, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
     Container.query({all : all, filters: filters, endpointId: endpointId }).$promise
     .then(function success(data) {
@@ -40,7 +40,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.resizeTTY = function (id, width, height, timeout, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     $timeout(function() {
@@ -61,51 +61,51 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.startContainer = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.start({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
   service.stopContainer = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.stop({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
   service.restartContainer = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.restart({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
   service.killContainer = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.kill({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
   service.pauseContainer = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.pause({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
   service.resumeContainer = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.unpause({ id: id, endpointId: endpointId }, {}).$promise;
   };
 
   service.renameContainer = function(id, newContainerName, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.rename({id: id, name: newContainerName, endpointId: endpointId }, {}).$promise;
   };
 
   service.updateRestartPolicy = updateRestartPolicy;
 
   function updateRestartPolicy(id, restartPolicy, maximumRetryCounts, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.update({ id: id, endpointId: endpointId },
       { RestartPolicy: { Name: restartPolicy, MaximumRetryCount: maximumRetryCounts } }
     ).$promise;
   }
 
   service.createContainer = function(configuration, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
     Container.create(configuration).$promise
     .then(function success(data) {
@@ -118,7 +118,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.createAndStartContainer = function(configuration, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
     var containerID;
     service.createContainer(configuration)
@@ -136,7 +136,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.remove = function(container, removeVolumes, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     Container.remove({ id: container.Id, v: (removeVolumes) ? 1 : 0, force: true , endpointId: endpointId}).$promise
@@ -159,7 +159,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.createExec = function(execConfig, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     Container.exec({}, execConfig).$promise
@@ -178,7 +178,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.logs = function(id, stdout, stderr, timestamps, since, tail, stripHeaders, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     var parameters = {
@@ -203,7 +203,7 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.containerStats = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     Container.stats({ id: id, endpointId: endpointId }).$promise
@@ -219,17 +219,17 @@ function ContainerServiceFactory($q, Container, EndpointProvider, ResourceContro
   };
 
   service.containerTop = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.top({ id: id, endpointId: endpointId }).$promise;
   };
 
   service.inspect = function(id, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.inspect({ id: id, endpointId: endpointId }).$promise;
   };
 
   service.prune = function(filters, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return Container.prune({ filters: filters, endpointId: endpointId }).$promise;
   };
 

@@ -6,7 +6,7 @@ angular.module('portainer.docker')
   var service = {};
 
   service.plugins = function(endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
     System.info({endpointId: endpointId}).$promise
     .then(function success(data) {
@@ -20,22 +20,22 @@ angular.module('portainer.docker')
   };
 
   service.info = function(endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return System.info({endpointId: endpointId}).$promise;
   };
 
   service.ping = function(endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return SystemEndpoint.ping({endpointId: endpointId}).$promise;
   };
 
   service.version = function(endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return System.version({endpointId: endpointId}).$promise;
   };
 
   service.events = function(from, to, endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     var deferred = $q.defer();
 
     System.events({since: from, until: to, endpointId: endpointId}).$promise
@@ -53,7 +53,7 @@ angular.module('portainer.docker')
   };
 
   service.dataUsage = function (endpointId) {
-    if (!endpointId) { endpointId = EndpointProvider.endpointID; }
+    if (!endpointId) { endpointId = EndpointProvider.endpointID(); }
     return System.dataUsage({endpointId: endpointId}).$promise;
   };
 

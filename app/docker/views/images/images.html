@@ -53,13 +53,13 @@
 </div>
 <information-panel-offline ng-if="offlineMode"></information-panel-offline>
 <div class="row" ng-repeat=" images in imagesList">
+  <div class="col-lg-12 col-md-12 col-xs-12">
   <rd-header>
     <h4> 
       <i class="fa fa-server" aria-hidden="true"></i> 
       {{ images && images.endpoint && ( images.endpoint.Name + ' (' + images.endpoint.PublicURL + ')' ) }} 
     </h4>
   </rd-header>
-  <div class="col-sm-12">
     <images-datatable
     title-text="Images" title-icon="fa-clone"
     dataset="images" table-key="images"

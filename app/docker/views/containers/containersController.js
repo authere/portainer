@@ -7,22 +7,26 @@ function ($scope, ContainerService, Notifications, EndpointProvider) {
 
   function initView() {
     var endpoints = EndpointProvider.endpoints();
-    $scope.endpoints = endpoints;
-    $scope.containersList = [];
+    //$scope.endpoints = endpoints;
+    // $scope.containers = [];
 
-    _.each(endpoints, (ep, k)=> {
+    _.each(endpoints, (ep)=> {
       ContainerService.containers(1, null, ep.Id)
       .then(function success(data) {
-        data.endpoint = ep;
         _.each(data, (v) => {
-          v.endpointId = ep.Id;
+          v.Endpoint = ep;
+          v.HostName = ep.Name;
+          if (!v.IP) { v.IP = (ep && ep.PublicURL); }
+          if ($scope.containers) {
+            $scope.containers.push(v);
+          }
         });
-        $scope.containersList[k] = data;
+        if (!$scope.containers) { $scope.containers = data; }
         $scope.offlineMode = EndpointProvider.offlineMode();
       })
       .catch(function error(err) {
         Notifications.error('Failure', err, 'Unable to retrieve containers');
-        $scope.containersList[k] = [];
+        $scope.containers = [];
       });
     });
   }

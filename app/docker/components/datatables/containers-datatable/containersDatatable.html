@@ -122,6 +122,9 @@
           <thead>
             <tr>
               <th>
+                Host
+              </th>
+              <th>
                 <span class="md-checkbox" ng-if="!$ctrl.offlineMode" authorization="DockerContainerStart, DockerContainerStop, DockerContainerKill, DockerContainerRestart, DockerContainerPause, DockerContainerUnpause, DockerContainerDelete, DockerContainerCreate">
                   <input id="select_all" type="checkbox" ng-model="$ctrl.state.selectAll" ng-change="$ctrl.selectAll()" />
                   <label for="select_all"></label>
@@ -215,12 +218,13 @@
           </thead>
           <tbody>
             <tr dir-paginate="item in ($ctrl.state.filteredDataSet = ($ctrl.dataset | filter: $ctrl.applyFilters | filter:$ctrl.state.textFilter | orderBy:$ctrl.state.orderBy:$ctrl.state.reverseOrder | itemsPerPage: $ctrl.state.paginatedItemLimit))" ng-class="{active: item.Checked}">
+              <td>{{ item.HostName }}</td>
               <td>
                 <span class="md-checkbox" ng-if="!$ctrl.offlineMode" authorization="DockerContainerStart, DockerContainerStop, DockerContainerKill, DockerContainerRestart, DockerContainerPause, DockerContainerUnpause, DockerContainerDelete, DockerContainerCreate">
                   <input id="select_{{ $index }}" type="checkbox" ng-model="item.Checked" ng-click="$ctrl.selectItem(item, $event)"/>
                   <label for="select_{{ $index }}"></label>
                 </span>
-                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.containers.container({ id: item.Id, nodeName: item.NodeName, endpointId: item.endpointId })" title="{{ item | containername }}">{{ item | containername | truncate: $ctrl.settings.containerNameTruncateSize }}</a>
+                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.containers.container({ id: item.Id, nodeName: item.NodeName, endpointId: item.Endpoint && item.Endpoint.Id })" title="{{ item | containername }}">{{ item | containername | truncate: $ctrl.settings.containerNameTruncateSize }}</a>
                 <span ng-if="$ctrl.offlineMode">{{ item | containername | truncate: $ctrl.settings.containerNameTruncateSize }}</span>
               </td>
               <td ng-show="$ctrl.columnVisibility.columns.state.display">
@@ -228,13 +232,13 @@
                 <span ng-if="['starting','healthy','unhealthy'].indexOf(item.Status) === -1" class="label label-{{ item.Status|containerstatusbadge }}">{{ item.Status }}</span>
               </td>
               <td ng-if="!$ctrl.offlineMode && ($ctrl.settings.showQuickActionStats || $ctrl.settings.showQuickActionLogs || $ctrl.settings.showQuickActionExec || $ctrl.settings.showQuickActionAttach || $ctrl.settings.showQuickActionInspect)" ng-show="$ctrl.columnVisibility.columns.actions.display" authorization="DockerContainerStats, DockerContainerLogs, DockerExecStart, DockerContainerInspect, DockerTaskInspect, DockerTaskLogs">
-                <container-quick-actions container-id="item.Id" node-name="item.NodeName" endpoint-id="item.endpointId" status="item.Status" state="$ctrl.settings"></container-quick-actions>
+                <container-quick-actions container-id="item.Id" node-name="item.NodeName" endpoint-id="item.Endpoint && item.Endpoint.Id" status="item.Status" state="$ctrl.settings"></container-quick-actions>
               </td>
               <td ng-if="$ctrl.offlineMode">
               </td>
               <td ng-show="$ctrl.columnVisibility.columns.stack.display">{{ item.StackName ? item.StackName : '-' }}</td>
               <td ng-show="$ctrl.columnVisibility.columns.image.display">
-                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.images.image({ id: item.Image, endpointId: item.endpointId })">{{ item.Image | trimshasum }}</a>
+                <a ng-if="!$ctrl.offlineMode" ui-sref="docker.images.image({ id: item.Image, endpointId: item.Endpoint && item.Endpoint.Id })">{{ item.Image | trimshasum }}</a>
                 <span ng-if="$ctrl.offlineMode">{{ item.Image | trimshasum }}</span>
               </td>
               <td ng-show="$ctrl.columnVisibility.columns.created.display">

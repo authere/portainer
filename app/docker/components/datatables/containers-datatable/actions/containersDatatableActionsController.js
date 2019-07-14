@@ -67,7 +67,7 @@ function ($state, ContainerService, ModalService, Notifications, HttpRequestHelp
     var actionCount = containers.length;
     angular.forEach(containers, function (container) {
       HttpRequestHelper.setPortainerAgentTargetHeader(container.NodeName);
-      action(container.Id)
+      action(container.Id, container.Endpoint && container.Endpoint.Id)
       .then(function success() {
         Notifications.success(successMessage, container.Names[0]);
       })
